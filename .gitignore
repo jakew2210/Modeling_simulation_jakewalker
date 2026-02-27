@@ -1,0 +1,9 @@
+# Compiled Java files
+*.class
+
+# IntelliJ files
+.idea/
+*.iml
+
+# Mac files
+.DS_Store
