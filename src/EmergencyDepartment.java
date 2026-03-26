@@ -24,7 +24,16 @@ public class EmergencyDepartment {
         return -Math.log(1 - random.nextDouble()) / rate;
     }
 
+    // updates queue statistics whenever queue size changes
+    private void updateQueueStats(double currentTime) {
+        double timePassed = currentTime - stats.lastQueueUpdateTime;
+        stats.queueArea += queue.size() * timePassed;
+        stats.lastQueueUpdateTime = currentTime;
+    }
+
     public void handleArrival(double currentTime, SimulationEngine engine) {
+
+        updateQueueStats(currentTime);
 
         Patient patient = new Patient(currentTime);
 
@@ -32,10 +41,17 @@ public class EmergencyDepartment {
             startService(patient, currentTime, engine);
         } else {
             queue.add(patient);
+
+            if (queue.size() > stats.maxQueueLength) {
+                stats.maxQueueLength = queue.size();
+            }
         }
 
         double nextArrival = currentTime + exponential(arrivalRate);
-        engine.schedule(new Event(nextArrival, EventType.ARRIVAL, null));
+
+        if (nextArrival <= engine.getEndTime()) {
+            engine.schedule(new Event(nextArrival, EventType.ARRIVAL, null));
+        }
     }
 
     private void startService(Patient patient, double currentTime, SimulationEngine engine) {
@@ -53,12 +69,21 @@ public class EmergencyDepartment {
 
     public void handleDeparture(double currentTime, SimulationEngine engine) {
 
+        updateQueueStats(currentTime);
+
         stats.patientsServed++;
         busyDoctors--;
 
         if (!queue.isEmpty()) {
             Patient next = queue.poll();
+
+            updateQueueStats(currentTime);
+
             startService(next, currentTime, engine);
         }
+    }
+
+    public int getCurrentQueueLength() {
+        return queue.size();
     }
 }
