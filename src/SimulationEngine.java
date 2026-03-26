@@ -17,13 +17,22 @@ public class SimulationEngine {
         eventQueue.add(event);
     }
 
+    public double getEndTime() {
+        return endTime;
+    }
+
     public void run() {
 
         schedule(new Event(0, EventType.ARRIVAL, null));
 
-        while (!eventQueue.isEmpty() && currentTime < endTime) {
+        while (!eventQueue.isEmpty()) {
 
             Event event = eventQueue.poll();
+
+            if (event.time > endTime) {
+                break;
+            }
+
             currentTime = event.time;
 
             if (event.type == EventType.ARRIVAL) {
@@ -32,5 +41,9 @@ public class SimulationEngine {
                 ed.handleDeparture(currentTime, this);
             }
         }
+
+        // final queue stats update through end of simulation
+        ed.stats.queueArea += ed.getCurrentQueueLength() * (endTime - ed.stats.lastQueueUpdateTime);
+        ed.stats.lastQueueUpdateTime = endTime;
     }
 }
