@@ -1,91 +1,101 @@
 # Discrete Event Simulation of Patient Flow in a Hospital Emergency Department
 
-## Project Status
+## Project Description
 
-This project implements a discrete event simulation of patient flow in a hospital emergency department. The simulation models patient arrivals, queueing behavior, treatment by medical staff, and discharge.
+This project is a discrete event simulation of patient flow in a hospital emergency department. The simulation models patients arriving at the emergency department, waiting if all doctors are busy, receiving treatment, and then leaving the system.
 
-### Currently Implemented
+The purpose of the simulation is to test how different parameters affect emergency department performance. The main parameters are the number of doctors, patient arrival rate, service rate, and simulation time. The simulation outputs performance metrics such as patients served, average wait time, doctor utilization, maximum queue length, average queue length, and patients left in the queue at the end of the run.
 
-- Discrete event scheduling using a `PriorityQueue`
-- Poisson arrival process modeled using exponential interarrival times
-- M/M/c queueing model with configurable number of doctors
-- Exponential service time distribution
-- Performance metrics collection:
-  - Average patient wait time
-  - Doctor utilization
-  - Total patients served
+This project was created for CS 4632 Modeling and Simulation.
 
-### Remaining Work
-
-- Additional performance metrics
-- Experimental scenario comparisons
-- Data export and analysis for Milestones 3 and 4
-- Extended validation and testing
-
-No major architectural changes were made from the Milestone 1 proposal
+---
 
 ## Installation Instructions
 
-### Requirements
+1. Clone the repository:
 
-- Java 17 or newer
-- IntelliJ IDEA
+```bash
+git clone https://github.com/jakew2210/Modeling_simulation_jakewalker.git
+```
 
-### Setup Steps
+2. Open the project in IntelliJ IDEA or another Java IDE.
 
-1. Clone the repository: 
-2. Open the project in IntelliJ.
-3. Ensure the `src` folder is marked as Sourecs Root.
-4. Run `Main.java`.
+3. Make sure the Java JDK is installed.
 
-## Usage
+4. Open `Main.java`.
 
-Simulation parameters are configured in `Main.java`:
+5. Run the `main` method.
 
-- `doctors` → number of medical staff
-- `arrivalRate` → patients per hour
-- `serviceRate` → patients served per hour per doctor
-- `simulationTime` → total simulation duration in hours
+No external libraries are required. The project uses standard Java libraries.
 
+---
 
-### Output
+## Usage Guide
 
-The simulation outputs:
+The simulation parameters are set in `Main.java`.
 
-- Total patients served
-- Average wait time (in minutes)
-- Doctor utilization
+Example:
 
-Changing arrival or service rates allows testing different demand and staffing scenarios
+```java
+int doctors = 3;
+double arrivalRate = 15.0;
+double serviceRate = 6.0;
+double simulationTime = 12.0;
+```
 
-## Architecture Overview
+To run a different scenario, change one or more of these values and run the program again.
 
-The system follows a discrete event simulation structure
+For example, to test a higher patient arrival rate, change:
 
-### Core Components
+```java
+double arrivalRate = 20.0;
+```
 
-- **SimulationEngine**  
-  Controls event scheduling and processes events in chronological order.
+To test more doctors, change:
 
-- **EmergencyDepartment**  
-  Manages queue logic, doctor availability, and service handling.
+```java
+int doctors = 4;
+```
 
-- **Event / EventType**  
-  Represents arrival and service completion events.
+After running the program, the output will show the simulation results in the console.
 
-- **Patient**  
-  Represents individual entities in the simulation.
+---
 
-- **Statistics**  
-  Collects and stores performance metrics.
+## Parameter Explanations
 
-The implementation directly reflects the UML design proposed in Milestone 1, including event based state transitions and queue management logic.
+| Parameter | Meaning | Example |
+|---|---|---|
+| `doctors` | Number of doctors available to treat patients | `3` |
+| `arrivalRate` | Average number of patients arriving per hour | `15.0` |
+| `serviceRate` | Average number of patients one doctor can treat per hour | `6.0` |
+| `simulationTime` | Total amount of time the simulation runs, measured in hours | `12.0` |
 
-## Version Control and Development
+---
 
-Development has followed an iterative approach with multiple meaningful commits reflecting incremental progress:
+## Example Output
 
-- Initial simulation framework implementation
-- Queue model implementation
-- Metrics integration
-- Parameter adjustments and utilization correction
+```text
+==================================
+Emergency Department Simulation
+==================================
+Doctors: 3
+Arrival rate: 15.0 patients/hour
+Service rate: 6.0 patients/hour
+Simulation time: 12.0 hours
+----------------------------------
+Patients served: 204
+Average wait time: 10.00 minutes
+Doctor utilization: 92.00%
+Maximum queue length: 15
+Average queue length: 2.85
+Patients left in queue at end: 2
+==================================
+```
+
+---
+
+## Author
+
+Jake Walker  
+CS 4632 Modeling and Simulation  
+Kennesaw State University
